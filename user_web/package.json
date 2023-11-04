@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "next": "14.0.1",
+    "node-modules": "^1.0.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "start": "^5.1.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
