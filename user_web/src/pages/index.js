@@ -9,6 +9,7 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [userList, setUserList] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const closeForm = () => {
     console.log("Formee");
@@ -18,13 +19,18 @@ export default function Home() {
   };
 
   const getAllUser = async () => {
-   
     const { users } = await fetch("http://localhost:8008/api/users").then(
       (res) => res.json()
-      
     );
     setUserList(users);
-   
+  };
+
+  const handleUpdate = async (userId) => {
+    console.log("ID", userId);
+    setOpen(true);
+    const updateUser = userList.filter((user) => user.id === userId);
+    console.log(userId, updateUser);
+    setSelectedUser(updateUser[0]);
   };
 
   useEffect(() => {
@@ -49,8 +55,13 @@ export default function Home() {
           Шинэ хэрэглэгч нэмэх {count}
         </button>
       </div>
-      <Form open={open} closeForm={closeForm} />
-      <UserList users={userList} />
+      <Form
+        open={open}
+        closeForm={closeForm}
+        setSelectedUser={setSelectedUser}
+        selectedUser={selectedUser}
+      />
+      <UserList users={userList} handleUpdate={handleUpdate} />
     </main>
   );
 }

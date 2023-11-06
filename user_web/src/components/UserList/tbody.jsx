@@ -1,11 +1,11 @@
 import React from "react";
 import TRow from "./trow";
 
-const TBody = ({ users }) => {
+const TBody = ({ users, handleUpdate }) => {
   return (
     <tbody>
       {users.map((user) => (
-        <TRow user={user} />
+        <TRow user={user} handleUpdate={handleUpdate} />
       ))}
     </tbody>
   );

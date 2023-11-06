@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Form = ({ open, closeForm }) => {
+const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
   const [imgData, setImgData] = useState(null);
   const [isLoading, setIsloading] = useState(false);
 
@@ -15,24 +15,43 @@ const Form = ({ open, closeForm }) => {
 
   const handleChange = (e) => {
     console.log(e.target.value);
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (selectedUser) {
+      setSelectedUser({ ...selectedUser, [e.target.name]: e.target.value });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
   const saveData = async () => {
     try {
       setIsloading(true);
-      const { message } = await fetch("http://localhost:8008/api/users/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      if (selectedUser) {
+        const { message } = await fetch(
+          "http://localhost:8008/api/users/" + selectedUser.id,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(selectedUser),
+          }
+        );
+      } else {
+        const { message } = await fetch("http://localhost:8008/api/users/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+      }
+      toast.success("Хэрэглэгчийн мэдээлэл өөрчлөгдлөө");
     } catch (error) {
       console.log("ERR", error);
     } finally {
       setIsloading(false);
       closeForm();
+      setRefresh(!refresh);
     }
   };
 

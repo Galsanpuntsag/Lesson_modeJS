@@ -1,33 +1,7 @@
 import React, { useState } from "react";
+import Delete from "../Delete";
 
-const TRow = ({ user, users,}) => {
-  const [userToDelete, setUserToDelete] = useState(null);
-
-  const handleDelete = async () => {
-    try {
-      const response = await fetch(`http://localhost:8008/api/users/${userToDelete.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (response.ok) {
-        // Filter the users list to remove the deleted user
-        const updatedUsers = users.filter((u) => u.id !== userToDelete.id);
-        // Update the state with the new user list
-        setUserToDelete(updatedUsers
-          )
-      }
-    } catch (error) {
-      console.log("Error deleting user:", error);
-    }
-  };
-
-  const handleChange = () => {
-    setUserToDelete(user); // Open a confirmation modal or perform the delete directly
-  };
-
+const TRow = ({ user, handleUpdate }) => {
   const getDepartment = (department) => {
     switch (department) {
       case "human resource": {
@@ -78,8 +52,13 @@ const TRow = ({ user, users,}) => {
       </td>
       <td>{getDepartment(user.department)}</td>
       <td>
-        <button className=" btn btn-warning  mx-2">засах</button>
-        <button className="  btn btn-error " onClick={handleChange}>устгах</button>
+        <button
+          className=" btn btn-warning  mx-2"
+          onClick={() => handleUpdate(user.id)}
+        >
+          засах
+        </button>
+        {/* <Delete userId={userId} /> */}
       </td>
     </tr>
   );
