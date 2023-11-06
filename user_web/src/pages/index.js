@@ -18,10 +18,13 @@ export default function Home() {
   };
 
   const getAllUser = async () => {
+   
     const { users } = await fetch("http://localhost:8008/api/users").then(
       (res) => res.json()
+      
     );
     setUserList(users);
+   
   };
 
   useEffect(() => {
