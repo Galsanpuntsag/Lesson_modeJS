@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
+const Form = ({ open, closeForm, selectedUser, setSelectedUser, setRefresh, refresh }) => {
   const [imgData, setImgData] = useState(null);
   const [isLoading, setIsloading] = useState(false);
 
@@ -14,13 +14,15 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
   });
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     if (selectedUser) {
       setSelectedUser({ ...selectedUser, [e.target.name]: e.target.value });
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
+      console.log("formData1", formData)
     }
   };
+
+  console.log("formData2", formData)
 
   const saveData = async () => {
     try {
@@ -49,10 +51,19 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
     } catch (error) {
       console.log("ERR", error);
     } finally {
+      console.log("formData3", formData)
+      setFormData({  
+      avatarUrl: "/images/avatar2.jpg",
+      firstName: "",
+      lastName: "",
+      email: "",
+      birthDate: "",
+      department: ""})
       setIsloading(false);
-      closeForm();
       setRefresh(!refresh);
+      closeForm();
     }
+   
   };
 
   return (
@@ -71,6 +82,7 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
               type="text"
               placeholder="нэрээ оруулна уу"
               className="w-full input input-bordered input-primary"
+              value={selectedUser ? selectedUser.firstName : formData.firstName}
               onChange={handleChange}
             />
           </div>
@@ -83,6 +95,7 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
               type="text"
               placeholder="овог оруулна уу"
               className="w-full input input-bordered input-primary"
+              value={selectedUser ? selectedUser.lastName : formData.lastName}
               onChange={handleChange}
             />
           </div>
@@ -95,6 +108,7 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
               type="text"
               placeholder="таны имэйл"
               className="w-full input input-bordered input-primary"
+              value={selectedUser ? selectedUser.email : formData.email}
               onChange={handleChange}
             />
           </div>
@@ -107,6 +121,7 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
               type="date"
               placeholder="төрсөн он сараа оруулна уу"
               className="w-full input input-bordered input-primary"
+              value={selectedUser ? selectedUser.birthDate : formData.birthDate}
               onChange={handleChange}
             />
           </div>
@@ -117,6 +132,7 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
             <select
               name="department"
               className="select select-primary w-full max-w-xs"
+              value={selectedUser ? selectedUser.department : formData.birthDate}
               onChange={handleChange}
             >
               <option disabled selected>
@@ -126,6 +142,8 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
               <option value="human resource">Хүний нөөц</option>
               <option value="technology">Технологи</option>
               <option value="finance">Санхүү</option>
+              <option value="finance">Авто зам</option>
+
             </select>
           </div>
           <div>
@@ -141,13 +159,20 @@ const Form = ({ open, closeForm, selectedUser, setSelectedUser }) => {
           </div>
           <div>
             <div className="avatar">
-              <div className="w-24 rounded-full">
-                <img src={imgData} alt="pic" />
+              <div className="w-24 rounded-full"
+              >
+                
+                <img src={selectedUser ? selectedUser.avatarUrl : imgData} alt="pic" />
               </div>
+            
             </div>
           </div>
         </form>
         <div className="modal-action">
+        <button className="btn btn-error" onClick={closeForm}>
+            {isLoading && <span className="loading loading-spinner"></span>}
+            болих
+          </button>
           <button className="btn btn-primary" onClick={saveData}>
             {isLoading && <span className="loading loading-spinner"></span>}
             нэмэх

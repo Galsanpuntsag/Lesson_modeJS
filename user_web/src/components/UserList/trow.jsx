@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Delete from "../Delete";
 
-const TRow = ({ user, handleUpdate }) => {
+const TRow = ({ user, handleUpdate, handleDelete }) => {
   const getDepartment = (department) => {
     switch (department) {
       case "human resource": {
@@ -18,6 +18,14 @@ const TRow = ({ user, handleUpdate }) => {
           </div>
         );
       }
+      case "autozam": {
+        return (
+          <div className={`badge badge-accent badge-outline`}>
+            {user.department}
+          </div>
+        );
+      }
+
       default: {
         return (
           <div className={`badge badge-accent badge-outline`}>
@@ -58,7 +66,13 @@ const TRow = ({ user, handleUpdate }) => {
         >
           засах
         </button>
-        {/* <Delete userId={userId} /> */}
+        <button
+          className=" btn btn-delete  mx-2"
+          onClick={() => handleDelete(user.id)}
+        >
+          устгах
+        </button>
+       
       </td>
     </tr>
   );
